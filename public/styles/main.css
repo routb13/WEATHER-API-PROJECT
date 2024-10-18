@@ -1,0 +1,54 @@
+body {
+    display: flex;
+    flex-direction: column;
+   /* align-items: center; */
+   /* justify-content: center; */
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+  }
+  .form{
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    padding-top:2rem;  
+    padding-left:2rem;
+    align-items:center;
+    /*gap:10px; */
+  }
+  .mb-3{
+    display:flex;
+    flex-direction: row;
+  }
+.input{
+    height:30px;
+    width:200px; 
+  }
+.btn {  
+    /* margin-top:10px; */
+     margin-left: 50px;
+     border: 2px solid black;
+     background-color: white;
+     color: black;
+     padding: 14px 28px;
+     font-size: 16px;
+     cursor: pointer;  
+}
+.info{
+  border-color:#2196F3;
+  color:dodgerblue;
+}
+.info:hover{
+  background: #2196F3;
+  color: white;
+}
+  #getWeather {
+    background-color: #f1c40f;
+  }
+  .response-area {
+    margin-top: 20px;
+    background-color: white;
+    padding: 20px;
+  }
+  

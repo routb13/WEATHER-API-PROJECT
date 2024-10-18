@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather app</title>
+      <link rel="stylesheet" type="text/css" href="styles/main.css">
+</head>
+<body>  
+    <div class="flex-container">
+      <!-- header -->
+      <div><%- include("partials/header.ejs") %></div>
+      <form action="/submit" class="form" method="POST">
+        <div class="mb-3">
+          <input type="text" class="form-control" id="exampleFormControlInput1" name="city" placeholder="Search City" required>
+          <!-- 
+            <input type="text" class="form-control" id="exampleFormControlInput2" name="country" placeholder="Search Country">
+          -->
+          <input class="btn btn-primary" type="submit" value="Search">
+        </div>
+      </form>
+      <div class="response-area">
+        <% if(locals.cityWeather){ %>
+          <div class="container">
+            <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+                <h1 class="display-4 fw-normal text-body-emphasis">
+                  Weather of <%= cityWeather.name %>,<%= cityWeather.sys.country %>
+                </h1>
+                <p class="fs-5 text-body-secondary">
+                  <% var time=new Date(cityWeather.dt*1000).toLocaleString("en-US"); %>
+                  <!-- Time of data calculation: The original time was given in UNIX timestamp JavaScript works in milliseconds ,so first UNIX time stamp have to converted from seconds to
+                  milliseconds by multiplying 1000.   -->
+                  Time of Data calculation: <%= time %>
+                </p>
+              </div>
+              <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+                <div class="col">
+                  <div class="card mb-4 rounded-3 shadow-sm">
+                    <div class="card-header py-3">
+                      <h4 class="my-0 fw-normal">Weather</h4>
+                    </div>
+                    <div class="card-body">
+                      <h1 class="card-title pricing-card-title">
+                        <%= cityWeather.weather[0].main %>
+                        <small class="text-body-secondary fw-light"></small>
+                      </h1>
+                      <ul class="list-unstyled mt-3 mb-4">
+                        <li>Description : <%= cityWeather.weather[0].description %></li>
+                        <li>Humidity: <%= cityWeather.main.humidity %>%</li>
+                        <li>Visibility: <%= (cityWeather.visibility)/1000 %> km</li>
+                        <li>Cloudiness: <%=cityWeather.clouds.all %>%</li>
+                        
+                      </ul>
+                      <!-- <button type="button" class="w-100 btn btn-lg btn-outline-primary">Sign up for free</button> -->
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="card mb-4 rounded-3 shadow-sm">
+                    <div class="card-header py-3">
+                      <h4 class="my-0 fw-normal">Temperature</h4>
+                    </div>
+                    <div class="card-body">
+                      <h1 class="card-title pricing-card-title">
+                        <%= Math.round(cityWeather.main.temp-273.15) %>°C
+                        <!-- Kelvin to celcius:
+                             0k-273.15= -273.1 °C-->
+                        <small class="text-body-secondary fw-light"></small>
+                      </h1>
+                      <ul class="list-unstyled mt-3 mb-4">
+                        <li>Feels like: <%= Math.round(cityWeather.main.feels_like-273.15) %>°C</li>
+                        <li>Min temp: <%= Math.round(cityWeather.main.temp_min-273.15) %>°C</li>
+                        <li>Max temp: <%= Math.round(cityWeather.main.temp_max-273.15) %>°C</li>
+                        <li>
+                          <br>
+                        </li>
+                      </ul>
+                      <!-- <button type="button" class="w-100 btn btn-lg btn-primary">Get started</button> -->
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="card mb-4 rounded-3 shadow-sm">
+                    <div class="card-header py-3">
+                      <h4 class="my-0 fw-normal">Wind Speed</h4>
+                    </div>
+                    <div class="card-body">
+                      <h1 class="card-title pricing-card-title">
+                        <%=cityWeather.wind.speed %> m/s
+                        <small class="text-body-secondary fw-light"></small>
+                      </h1>
+                      <ul class="list-unstyled mt-3 mb-4">
+                        <li>Direction: <%=cityWeather.wind.deg %>&#176</li>
+                        <li>Gust: <%=cityWeather.wind.gust %> m/s</li>
+                        <li><br><br><br></li>
+                      </ul>
+                      <!-- <button type="button" class="w-100 btn btn-lg btn-primary">Contact us</button> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% } %>
+          <% if(locals.error){ %>
+            <div id="tag-error" class="tag-error"> 
+              <!-- Show any errors that were sent from the backend -->
+              <%=error%>
+            </div> 
+          <% } %>  
+      </div>  
+      <div>
+          <!-- Temperature of other cities--> 
+          <% if(locals.commonCities 
+            /*locals.delhiWeather && locals.moscowWeather && locals.londonWeather && locals.tokyoWeather 
+                &&nyWeather */
+                ){ %>
+            <h2 class="display-6 text-center mb-4">Weather of common cities</h2>
+            <div class="table-responsive">
+              <table class="table text-center">
+                <thead>
+                  <tr>
+                    <th style="width: 22%;" class="text-start"></th> 
+                    <th style="width: 22%;">Weather</th>
+                    <th style="width: 22%;">Temperature</th>
+                    <th style="width: 22%;">Humidity</th>
+                    <th style="width: 22%;">Wind speed</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row" class="text-start"><%= commonCities.delhi.name %></th>
+                    <td><%= commonCities.delhi.weather[0].main %></td>
+                    <td>
+                      <%= Math.round(commonCities.delhi.main.temp-273.15) %>&#8451
+                    </td>
+                    <td><%= commonCities.delhi.main.humidity %>%</td>
+                    <td><%=commonCities.delhi.wind.speed %> m/s</td>
+                    <td><svg class="bi" width="24" height="24"><use xlink:href="#check"></use></svg></td>
+                  </tr>
+                  <tr>
+                  <th scope="row" class="text-start"><%= commonCities.moscow.name %></th>
+                  <td><%= commonCities.moscow.weather[0].main %></td>
+                  <td><%= Math.round(commonCities.moscow.main.temp-273.15) %>&#8451</td>
+                  <td><%= commonCities.moscow.main.humidity %>%</td>
+                  <td><%= commonCities.moscow.wind.speed %> m/s</td>
+                  <td><svg class="bi" width="24" height="24"><use xlink:href="#check"></use></svg></td>
+                  </tr>
+                </tbody>
+                <tbody>
+                  <tr>
+                    <th scope="row" class="text-start"><%= commonCities.london.name %></th>
+                    <td><%= commonCities.london.weather[0].main %></td>
+                    <td><%= Math.round(commonCities.london.main.temp-273.15) %>&#8451</td>
+                    <td><%= commonCities.london.main.humidity %>%</td>
+                    <td><%= commonCities.london.wind.speed %> m/s</td>
+                    <td><svg class="bi" width="24" height="24"><use xlink:href="#check"></use></svg></td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="text-start"><%= commonCities.tokyo.name %> </th>
+                    <td><%= commonCities.tokyo.weather[0].main %></td>
+                    <td><%= Math.round(commonCities.tokyo.main.temp-273.15) %>&#8451</td>
+                    <td><%= commonCities.tokyo.main.humidity %>%</td>
+                    <td><%= commonCities.tokyo.wind.speed %> m/s</td>
+                    <td><svg class="bi" width="24" height="24"><use xlink:href="#check"></use></svg></td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="text-start"  name="New York">New York</th>
+                    <td><%= commonCities.ny.weather[0].main %></td>
+                    <td><%= Math.round(commonCities.ny.main.temp-273.15) %>&#8451</td>
+                    <td><%= commonCities.ny.main.humidity %>%</td>
+                    <td><%= commonCities.ny.wind.speed %> m/s</td>
+                    <td><svg class="bi" width="24" height="24"><use xlink:href="#check"></use></svg></td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="text-start">Beijing</th>
+                    <td><%= commonCities.beijing.weather[0].main %></td>
+                    <td><%= Math.round(commonCities.beijing.main.temp-273.15) %>&#8451</td>
+                    <td><%= commonCities.beijing.main.humidity %>%</td>
+                    <td><%= commonCities.beijing.wind.speed %> m/s</td>
+                    <td><svg class="bi" width="24" height="24"><use xlink:href="#check"></use></svg></td>
+                  </tr>
+                </tbody>
+              </table>
+          <% } %>
+          <% if(locals.error){ %>
+            <div id="tag-error" class="tag-error"> 
+              <%=error%>
+            </div> 
+          <% } %>  
+        </div>
+    </div>
+</body>
+</html>

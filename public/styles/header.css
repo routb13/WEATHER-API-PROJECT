@@ -1,0 +1,29 @@
+*{
+    box-sizing: border-box;
+}
+/* .navbar-nav{
+    float : right;
+}  */   
+.navbar-brand{
+    font-family: "Allura",cursive;
+    font-size:37px;
+    letter-spacing:1.5px;
+    font-weight: 600;
+    color:#00008B;
+}  
+nav{    
+    background: blue;
+   /*  height: 66px;  */
+}
+nav div div ul li a:hover{
+    background: #c5c6c6;
+    transition: 0.5s;
+}
+/*
+nav div div ul{
+    display: none;
+}
+.navbar-nav{
+    display:none;
+}
+*/
